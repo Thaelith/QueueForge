@@ -8,6 +8,12 @@
 
 A production-style distributed job queue built with Java 21, Spring Boot, and PostgreSQL.
 
+![Overview Dashboard](docs/assets/queueforge-overview.png)
+![Jobs List](docs/assets/queueforge-jobs.png)
+![Job Detail Timeline](docs/assets/job-detail-timeline.png)
+![Dead Letter Queue](docs/assets/dead-letter-queue.png)
+![Swagger API](docs/assets/swagger-ui.png)
+
 ## Overview
 
 QueueForge is a durable background job queue where API clients submit jobs, worker nodes lease and execute them safely using PostgreSQL row locking, and operators observe queue health through metrics, logs, and an admin API.
@@ -195,6 +201,13 @@ observability/        Prometheus + Grafana configs
 - [Worker Leasing](docs/WORKER_LEASING.md)
 - [Observability](docs/OBSERVABILITY.md)
 - [API Examples](docs/API_EXAMPLES.md)
+- [Local Demo Guide](docs/DEMO.md)
+- [Commands Reference](docs/COMMANDS.md)
+- [Screenshots Guide](docs/SCREENSHOTS.md)
+- [ADR: PostgreSQL SKIP LOCKED](docs/adr/0001-use-postgresql-skip-locked.md)
+- [ADR: Separate Dashboard](docs/adr/0002-separate-dashboard-from-backend.md)
+- [ADR: Worker Polling](docs/adr/0003-worker-polling-and-lease-recovery.md)
+- [HTTP Request Collection](docs/http/queueforge.http)
 
 ## Design Tradeoffs
 
@@ -211,6 +224,8 @@ observability/        Prometheus + Grafana configs
 - **Phase 3** — Background Worker: `@Scheduled` loop, demo handlers, metrics, run-once
 - **Phase 4** — Admin API: dashboard, queue stats, workers, events, requeue/cancel/retry
 - **Phase 5** — Production Polish: CI/CD, Docker, Prometheus/Grafana, MDC logs, cleanup
+- **Phase 6** — Admin Dashboard: React + TypeScript + Tailwind, 7 pages, event timeline
+- **Phase 7** — Portfolio Polish: demo scripts, ADRs, screenshots, docs, repo hygiene
 
 ## License
 

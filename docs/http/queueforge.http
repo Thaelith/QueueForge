@@ -1,0 +1,114 @@
+### QueueForge API Requests
+### Use with VS Code REST Client or IntelliJ HTTP Client
+
+@baseUrl = http://localhost:8080
+@workerId = worker-1
+@queue = default
+
+### Health Check
+GET {{baseUrl}}/actuator/health
+
+### Prometheus Metrics
+GET {{baseUrl}}/actuator/prometheus
+
+### =========== JOBS ===========
+
+### Submit a Job (log)
+POST {{baseUrl}}/api/v1/jobs
+Content-Type: application/json
+
+{
+  "queue": "default",
+  "type": "example.log",
+  "payload": { "msg": "hello" }
+}
+
+### Submit a Job (email)
+POST {{baseUrl}}/api/v1/jobs
+Content-Type: application/json
+
+{
+  "queue": "default",
+  "type": "example.email",
+  "payload": { "to": "user@example.com", "subject": "Welcome" }
+}
+
+### Submit a Job (webhook)
+POST {{baseUrl}}/api/v1/jobs
+Content-Type: application/json
+
+{
+  "queue": "default",
+  "type": "example.webhook",
+  "payload": { "url": "https://example.com/hook", "method": "POST" }
+}
+
+### Submit a Job (report)
+POST {{baseUrl}}/api/v1/jobs
+Content-Type: application/json
+
+{
+  "queue": "default",
+  "type": "example.report",
+  "payload": { "reportName": "daily-summary", "format": "pdf" }
+}
+
+### Submit a Job (fail - for retry demo)
+POST {{baseUrl}}/api/v1/jobs
+Content-Type: application/json
+
+{
+  "queue": "default",
+  "type": "example.fail",
+  "payload": { "message": "Simulated failure" },
+  "maxAttempts": 2
+}
+
+### List Jobs
+GET {{baseUrl}}/api/v1/jobs?status=PENDING&size=5
+
+### Get Job Detail
+GET {{baseUrl}}/api/v1/jobs/{{jobId}}
+
+### =========== WORKER ===========
+
+### Get Worker Config
+GET {{baseUrl}}/api/v1/workers/config
+
+### Run Worker Once
+POST {{baseUrl}}/api/v1/workers/{{workerId}}/run-once
+
+### Manual Lease Single Job
+POST {{baseUrl}}/api/v1/workers/{{workerId}}/lease?queue=default
+
+### Recover Expired Leases
+POST {{baseUrl}}/api/v1/workers/recover-leases
+
+### =========== ADMIN ===========
+
+### Dashboard Summary
+GET {{baseUrl}}/api/v1/admin/dashboard/summary
+
+### Queue Stats
+GET {{baseUrl}}/api/v1/admin/queues/stats
+
+### Worker List
+GET {{baseUrl}}/api/v1/admin/workers
+
+### Job Event Timeline
+GET {{baseUrl}}/api/v1/admin/jobs/{{jobId}}/events
+
+### Requeue Dead-Letter Job
+POST {{baseUrl}}/api/v1/admin/jobs/{{jobId}}/requeue
+Content-Type: application/json
+
+{ "resetAttempts": true, "reason": "Manual retry" }
+
+### Cancel Job
+POST {{baseUrl}}/api/v1/admin/jobs/{{jobId}}/cancel
+
+### Retry Job Now
+POST {{baseUrl}}/api/v1/admin/jobs/{{jobId}}/retry-now
+Content-Type: application/json
+
+{ "resetAttempts": true }
