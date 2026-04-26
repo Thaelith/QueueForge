@@ -19,6 +19,9 @@ public class JobEventService {
 
     public void record(UUID jobId, String eventType, String fromStatus, String toStatus,
                        String workerId, String message) {
+        if (jobId == null) {
+            return;
+        }
         var event = new JobEvent(
             null, jobId, eventType, fromStatus, toStatus,
             workerId, message, null,

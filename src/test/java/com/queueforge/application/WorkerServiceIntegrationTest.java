@@ -46,6 +46,8 @@ class WorkerServiceIntegrationTest {
     @BeforeEach
     void setUp() throws Exception {
         properties.getWorker().setEnabled(false);
+        jdbcTemplate.update("DELETE FROM job_events");
+        jdbcTemplate.update("DELETE FROM jobs");
     }
 
     @Test
@@ -71,7 +73,7 @@ class WorkerServiceIntegrationTest {
         workerService.processJobs("w1", List.of("default"));
 
         List<Integer> counts = jdbcTemplate.queryForList(
-            "SELECT COUNT(*) as cnt FROM jobs WHERE status = 'COMPLETED'", Integer.class);
+            "SELECT COUNT(*) as cnt FROM jobs WHERE status = 'COMPLETED' AND queue_name = 'default'", Integer.class);
         assertThat(counts.get(0)).isEqualTo(5);
     }
 
@@ -117,11 +119,11 @@ class WorkerServiceIntegrationTest {
         workerService.processJobs("w2", List.of("default"));
 
         int runningCount = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM jobs WHERE status = 'RUNNING'", Integer.class);
+            "SELECT COUNT(*) FROM jobs WHERE status = 'RUNNING' AND queue_name = 'default'", Integer.class);
         assertThat(runningCount).isZero();
 
         int completedCount = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM jobs WHERE status = 'COMPLETED'", Integer.class);
+            "SELECT COUNT(*) FROM jobs WHERE status = 'COMPLETED' AND queue_name = 'default'", Integer.class);
         assertThat(completedCount).isEqualTo(jobCount);
     }
 

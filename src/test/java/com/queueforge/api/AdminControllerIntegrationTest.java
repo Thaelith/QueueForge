@@ -2,10 +2,12 @@ package com.queueforge.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.queueforge.TestcontainersConfiguration;
+import com.queueforge.application.JobEventService;
 import com.queueforge.domain.Job;
 import com.queueforge.domain.JobPriority;
 import com.queueforge.domain.JobStatus;
 import com.queueforge.infrastructure.persistence.JobRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,15 @@ class AdminControllerIntegrationTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private JobEventService eventService;
+
+    @BeforeEach
+    void setUp() {
+        jdbcTemplate.update("DELETE FROM job_events");
+        jdbcTemplate.update("DELETE FROM jobs");
+    }
 
     @Test
     void shouldReturnDashboardSummary() throws Exception {
@@ -162,6 +173,7 @@ class AdminControllerIntegrationTest {
             Instant.now(), Instant.now(), null, null
         );
         jobRepository.save(job);
+        eventService.record(id, "JOB_CREATED", null, "PENDING", null, "Test job submitted");
         return id;
     }
 }
