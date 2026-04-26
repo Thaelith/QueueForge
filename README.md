@@ -231,4 +231,4 @@ observability/        Prometheus + Grafana configs
 
 - Contributions: see [CONTRIBUTING.md](CONTRIBUTING.md)
 - Security policy: see [SECURITY.md](SECURITY.md)
-- License: MIT
+- License: [MIT](LICENSE)
