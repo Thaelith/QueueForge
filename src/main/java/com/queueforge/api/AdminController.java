@@ -52,7 +52,8 @@ public class AdminController {
     public ResponseEntity<List<JobEventResponse>> jobEvents(@PathVariable UUID jobId) {
         List<JobEvent> events = eventService.getTimeline(jobId);
         var response = events.stream()
-            .map(e -> new JobEventResponse(e.id(), e.eventType(), e.createdAt(), e.message()))
+            .map(e -> new JobEventResponse(e.id(), e.eventType(), e.fromStatus(), e.toStatus(),
+                e.workerId(), e.createdAt(), e.message()))
             .toList();
         return ResponseEntity.ok(response);
     }

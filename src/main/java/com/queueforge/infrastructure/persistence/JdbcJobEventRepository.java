@@ -30,12 +30,15 @@ public class JdbcJobEventRepository implements JobEventRepository {
     @Override
     public void save(JobEvent event) {
         String sql = """
-            INSERT INTO job_events (job_id, event_type, message, metadata, created_at)
-            VALUES (?, ?, ?, ?::jsonb, ?)
+            INSERT INTO job_events (job_id, event_type, from_status, to_status, worker_id, message, metadata, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?::jsonb, ?)
             """;
         jdbcTemplate.update(sql,
             event.jobId(),
             event.eventType(),
+            event.fromStatus(),
+            event.toStatus(),
+            event.workerId(),
             event.message(),
             toJsonString(event.metadata()),
             Timestamp.from(event.createdAt())
@@ -76,9 +79,9 @@ public class JdbcJobEventRepository implements JobEventRepository {
                 rs.getLong("id"),
                 UUID.fromString(rs.getString("job_id")),
                 rs.getString("event_type"),
-                null,
-                null,
-                null,
+                rs.getString("from_status"),
+                rs.getString("to_status"),
+                rs.getString("worker_id"),
                 rs.getString("message"),
                 readJson(rs.getString("metadata")),
                 toInstant(rs.getTimestamp("created_at"))

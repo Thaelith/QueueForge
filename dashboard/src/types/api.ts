@@ -63,6 +63,9 @@ export interface WorkerSummaryResponse {
 export interface JobEventResponse {
   id: number;
   eventType: string;
+  fromStatus: string | null;
+  toStatus: string | null;
+  workerId: string | null;
   createdAt: string;
   message: string;
 }

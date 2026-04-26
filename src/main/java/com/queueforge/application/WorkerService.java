@@ -150,8 +150,6 @@ public class WorkerService {
         int count = jobRepository.releaseExpiredLeases();
         if (count > 0) {
             leasesRecovered.increment(count);
-            eventService.record(null, "LEASE_EXPIRED_BATCH", "RUNNING", "PENDING", null,
-                "Recovered " + count + " expired leases");
             log.info("action=recover_expired_leases recovered={}", count);
         }
         return count;

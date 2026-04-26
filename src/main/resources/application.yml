@@ -5,9 +5,9 @@ spring:
   application:
     name: queueforge
   datasource:
-    url: jdbc:postgresql://localhost:5432/queueforge
-    username: queueforge
-    password: queueforge
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/queueforge}
+    username: ${SPRING_DATASOURCE_USERNAME:queueforge}
+    password: ${SPRING_DATASOURCE_PASSWORD:queueforge_dev_password}
     driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
@@ -36,6 +36,8 @@ queueforge:
     completed-retention-days: 7
     cancelled-retention-days: 7
     batch-size: 500
+  security:
+    admin-api-key: ${QUEUEFORGE_ADMIN_API_KEY:}
 
 management:
   endpoints:

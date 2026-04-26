@@ -110,6 +110,10 @@ export default function JobDetail() {
                   <div className="text-[10px] text-on-surface-variant w-24 shrink-0">{new Date(evt.createdAt).toLocaleString()}</div>
                   <div>
                     <div className="text-xs font-medium text-on-surface">{evt.eventType}</div>
+                    <div className="text-[11px] text-on-surface-variant">
+                      {evt.fromStatus && evt.toStatus ? `${evt.fromStatus} → ${evt.toStatus}` : ''}
+                      {evt.workerId ? `  |  ${evt.workerId}` : ''}
+                    </div>
                     <div className="text-[11px] text-on-surface-variant">{evt.message}</div>
                   </div>
                 </div>

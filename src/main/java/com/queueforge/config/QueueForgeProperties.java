@@ -11,6 +11,7 @@ public class QueueForgeProperties {
     private Recovery recovery = new Recovery();
     private Retry retry = new Retry();
     private Cleanup cleanup = new Cleanup();
+    private Security security = new Security();
 
     public Worker getWorker() { return worker; }
     public void setWorker(Worker worker) { this.worker = worker; }
@@ -20,6 +21,8 @@ public class QueueForgeProperties {
     public void setRetry(Retry retry) { this.retry = retry; }
     public Cleanup getCleanup() { return cleanup; }
     public void setCleanup(Cleanup cleanup) { this.cleanup = cleanup; }
+    public Security getSecurity() { return security; }
+    public void setSecurity(Security security) { this.security = security; }
 
     public static class Worker {
         private boolean enabled = false;
@@ -83,5 +86,12 @@ public class QueueForgeProperties {
         public void setCancelledRetentionDays(int cancelledRetentionDays) { this.cancelledRetentionDays = cancelledRetentionDays; }
         public int getBatchSize() { return batchSize; }
         public void setBatchSize(int batchSize) { this.batchSize = batchSize; }
+    }
+
+    public static class Security {
+        private String adminApiKey = "";
+
+        public String getAdminApiKey() { return adminApiKey; }
+        public void setAdminApiKey(String adminApiKey) { this.adminApiKey = adminApiKey; }
     }
 }
