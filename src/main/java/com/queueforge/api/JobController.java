@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,7 @@ public class JobController {
         @RequestParam(required = false) String queue,
         @RequestParam(required = false) JobStatus status,
         @RequestParam(required = false) String type,
-        @PageableDefault(size = 20, sort = "createdAt,desc") Pageable pageable
+        @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<Job> jobs = listJobsUseCase.list(queue, status, type, pageable);
         return ResponseEntity.ok(jobs.map(this::toResponse));

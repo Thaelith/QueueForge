@@ -124,9 +124,12 @@ public class JdbcJobRepository implements JobRepository {
                 String property = switch (order.getProperty()) {
                     case "createdAt" -> "created_at";
                     case "updatedAt" -> "updated_at";
-                    case "runAt" -> "run_at";
-                    case "scheduledAt" -> "run_at";
-                    default -> order.getProperty();
+                    case "runAt", "scheduledAt" -> "run_at";
+                    case "priority" -> "priority";
+                    case "status" -> "status";
+                    case "type" -> "type";
+                    case "queue" -> "queue_name";
+                    default -> "created_at";
                 };
                 sorts.add(property + " " + order.getDirection().name());
             });
