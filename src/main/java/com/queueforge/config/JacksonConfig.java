@@ -13,6 +13,6 @@ public class JacksonConfig {
     public Jackson2ObjectMapperBuilderCustomizer pageModuleCustomizer() {
         SimpleModule pageModule = new SimpleModule("PageModule", Version.unknownVersion());
         pageModule.addSerializer(Page.class, new PageSerializer());
-        return builder -> builder.modules(pageModule);
+        return builder -> builder.modulesToInstall(modules -> modules.add(pageModule));
     }
 }
