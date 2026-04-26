@@ -227,6 +227,8 @@ observability/        Prometheus + Grafana configs
 - **Phase 6** — Admin Dashboard: React + TypeScript + Tailwind, 7 pages, event timeline
 - **Phase 7** — Portfolio Polish: demo scripts, ADRs, screenshots, docs, repo hygiene
 
-## License
+## Contributing & Security
 
-MIT
+- Contributions: see [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security policy: see [SECURITY.md](SECURITY.md)
+- License: MIT

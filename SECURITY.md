@@ -1,33 +1,72 @@
-# Security
+# Security Policy
 
-QueueForge is a **portfolio/demo project** demonstrating distributed job queue architecture. It is not intended for production deployment without additional security hardening.
+## Reporting a Vulnerability
 
-## Reporting Issues
+Please report vulnerabilities responsibly. Do not disclose exploit details publicly.
 
-If you discover a security vulnerability, please open a GitHub issue or contact the repository owner directly. Do not disclose vulnerabilities publicly until they are addressed.
+- Open a minimal GitHub issue without sensitive reproduction details if private reporting is not enabled on the repository.
+- Contact the maintainer directly if contact information is available in the GitHub profile.
+- Include a clear description of impact and affected area when possible.
+
+## Security Notes
+
+QueueForge is a portfolio/demo infrastructure project designed to demonstrate distributed job queue architecture. It is not production-ready without additional hardening.
+
+- REST and admin endpoints are unauthenticated by design for local demo use.
+- Local development database credentials may exist in `application.yml` or Docker Compose.
+- Actuator/Prometheus endpoints are exposed for local observability.
+- Demo handlers simulate email, webhook, and report behavior.
+- Job payloads are accepted as JSON and should not be treated as trusted input in production.
 
 ## Current Security Limitations
 
-- No authentication on REST API endpoints
+- No authentication
+- No authorization or role-based access control
+- No API keys
 - No rate limiting
-- Database credentials in `application.yml` (for local development)
 - No TLS/HTTPS
-- No input sanitization beyond Jakarta Bean Validation
-- Admin endpoints accessible without API keys
+- No CSRF protection for admin actions
+- Admin endpoints are open
+- Local database credentials are for development only
+- Job payloads are not sandboxed
+- No tenant isolation
+- No production secret management
+- No container image scanning configured
 
-## Production Hardening (Not Implemented)
+## Production Hardening Checklist
 
-If deploying beyond demo use:
+- Add authentication, such as API keys or OAuth2/OIDC.
+- Add role-based authorization.
+- Protect admin endpoints separately from public job submission endpoints.
+- Move secrets to environment variables or a secrets manager.
+- Enable TLS/HTTPS.
+- Add request rate limiting.
+- Validate and restrict job payload schemas.
+- Add audit logging for admin actions.
+- Restrict actuator endpoint exposure.
+- Put PostgreSQL on a private network.
+- Review dependencies with `./gradlew dependencies` and `npm audit`.
+- Add container image scanning if publishing Docker images.
+- Add CSRF protection or same-site controls if cookie-based auth is introduced.
+- Add CORS restrictions for the dashboard/API.
+- Consider signed/encrypted job payloads if sensitive data is processed.
 
-1. **Authentication**: Add API key or OAuth2/OpenID Connect
-2. **Authorization**: Separate admin API key from submit API key
-3. **TLS**: Configure HTTPS with valid certificates
-4. **Secrets**: Move database credentials to environment variables or vault
-5. **Rate Limiting**: Add request rate limiting per IP/API key
-6. **Input Validation**: Sanitize job payloads against injection
-7. **Audit Logging**: Log admin actions for compliance
-8. **Network**: Isolate database on private network, expose only API ports
+## Scope
 
-## Dependencies
+Reports should focus on:
 
-Keep dependencies updated. Use `./gradlew dependencies` and `npm audit` to check for known vulnerabilities.
+- API/admin endpoint exposure risks
+- Unsafe job payload handling
+- SQL injection risks
+- Authentication or authorization bypass if auth is added later
+- Dependency vulnerabilities
+- Dashboard XSS risks
+- Docker/Compose misconfiguration
+- Unsafe observability endpoint exposure
+- Secrets accidentally committed to the repository
+
+## Out of Scope
+
+- Vulnerabilities requiring direct local machine access without privilege escalation
+- Issues caused by intentionally running the demo with public ports exposed
+- Missing production features already documented as limitations, unless they create an unexpected exploit path
