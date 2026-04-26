@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: queueforge
+  datasource:
+    url: jdbc:postgresql://localhost:5432/queueforge
+    username: queueforge
+    password: queueforge
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+queueforge:
+  worker:
+    enabled: false
+    worker-id: local-worker-1
+    queues:
+      - default
+    poll-interval-ms: 1000
+    lease-duration-seconds: 30
+    max-jobs-per-poll: 5
+  recovery:
+    enabled: true
+    interval-ms: 30000
+  retry:
+    base-delay-seconds: 10
+    max-delay-seconds: 300
+    max-attempts: 10
+  cleanup:
+    enabled: false
+    interval-ms: 3600000
+    completed-retention-days: 7
+    cancelled-retention-days: 7
+    batch-size: 500
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} [%X{workerId}][%X{jobId}] %msg%n"
+  level:
+    com.queueforge: DEBUG
+    org.springframework.jdbc: INFO

@@ -1,0 +1,69 @@
+{
+  "title": "QueueForge",
+  "uid": "queueforge",
+  "panels": [
+    {
+      "title": "Jobs Leased",
+      "type": "stat",
+      "targets": [{ "expr": "rate(queueforge_jobs_leased_total[1m])", "legendFormat": "leased/s" }],
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 }
+    },
+    {
+      "title": "Jobs Completed",
+      "type": "stat",
+      "targets": [{ "expr": "rate(queueforge_jobs_completed_total[1m])", "legendFormat": "completed/s" }],
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 }
+    },
+    {
+      "title": "Jobs Failed",
+      "type": "stat",
+      "targets": [{ "expr": "rate(queueforge_jobs_failed_total[1m])", "legendFormat": "failed/s" }],
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 }
+    },
+    {
+      "title": "Jobs Dead-Lettered",
+      "type": "stat",
+      "targets": [{ "expr": "rate(queueforge_jobs_dead_lettered_total[1m])", "legendFormat": "dead-lettered/s" }],
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 }
+    },
+    {
+      "title": "Job Rates (per second)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(queueforge_jobs_leased_total[1m])", "legendFormat": "leased" },
+        { "expr": "rate(queueforge_jobs_completed_total[1m])", "legendFormat": "completed" },
+        { "expr": "rate(queueforge_jobs_failed_total[1m])", "legendFormat": "failed" },
+        { "expr": "rate(queueforge_jobs_dead_lettered_total[1m])", "legendFormat": "dead-lettered" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 }
+    },
+    {
+      "title": "Worker Polls",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(queueforge_worker_polls_total[1m])", "legendFormat": "polls/s" },
+        { "expr": "rate(queueforge_worker_poll_errors_total[1m])", "legendFormat": "errors/s" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 }
+    },
+    {
+      "title": "Execution Duration (ms)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(queueforge_job_execution_duration_seconds_sum[1m])/rate(queueforge_job_execution_duration_seconds_count[1m])", "legendFormat": "avg ms" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 }
+    },
+    {
+      "title": "JVM Memory",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "jvm_memory_used_bytes{area=\"heap\"}", "legendFormat": "heap used" },
+        { "expr": "jvm_memory_max_bytes{area=\"heap\"}", "legendFormat": "heap max" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 }
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1
+}
