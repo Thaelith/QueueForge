@@ -44,10 +44,6 @@ Thumbs.db
 *.log
 logs/
 
-### Project design assets ###
-distributed-job-queue-plan.md
-stitch_queueforge_admin_dashboard/
-
 ### Environment files ###
 .env
 .env.*
